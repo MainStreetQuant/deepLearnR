@@ -1,0 +1,25 @@
+Package: deepLearnR
+Title: Interface to TensorFlow Deeplearning Framework
+Version: 0.0.0.9000
+Date: 2016-03-13
+Authors@R: c(
+	      person("Krishna", "Sankar", email = "ksankar42@gmail.com", role = c("aut", "cre")),
+	      person("Billy","Vreeland", email = "billyvreeland@gmail.com", role = "aut"),
+	      person("Tej","Azad", email = "tdazad@gmail.com", role = "aut")
+		)
+Description: Package provides Classifier with different architectures - simple Linear
+	Neural Network, Deep Neural Network and Recursive Neural Network (rnn,gru & lstm).
+	The package interfaces with Tensorflow via the skflow python package.
+Depends:
+    R (>= 3.2.3)
+SystemRequirements: Python pckages TensorFlow, skflow and Pandas
+License: GPL-3
+LazyData: true
+Imports:
+    rPython
+RoxygenNote: 5.0.1
+Repository: CRAN
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
