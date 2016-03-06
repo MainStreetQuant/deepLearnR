@@ -6,8 +6,8 @@
 \usage{
 TensorFlow.Classifier(modelTag, XTrain, YTrain, nClasses = 2,
   miniBatchSize = 128, steps = 500, optimizer = "SGD",
-  learningRate = 0.05, hiddenUnits = NA, nnType = "linear",
-  netType = "ReLU", cellType = "lstm")
+  learningRate = 0.05, hiddenUnits = c(10, 20, 10), rnnSize = 100,
+  nnType = "linear", netType = "ReLU", cellType = "lstm")
 }
 \arguments{
 \item{modelTag}{Tag for this model - can be referenced in other calls like prediction}
@@ -18,21 +18,24 @@ TensorFlow.Classifier(modelTag, XTrain, YTrain, nClasses = 2,
 
 \item{nClasses}{The number of classes}
 
-\item{miniBatchSize}{Batch Sie for the mini batch for optimization algorithms like SGD}
+\item{miniBatchSize}{Batch Size for the mini batch for optimization algorithms like SGD}
 
 \item{steps}{Number of epochs for training}
 
-\item{optimizer}{The Optimizer algorithm = "SGD", "Adam","Adagrad"}
+\item{optimizer}{The Optimizer algorithm = "SGD", "Adam","Adagrad" (only "SGD" tested, others ignored)}
 
 \item{learningRate}{The learning rate for optimize algorithm}
 
-\item{hiddenUnits}{The number and architecture of hidden unit layers e.g. [10,20,10]}
+\item{hiddenUnits}{The number and architecture of hidden unit layers for dnn e.g. [10,20,10]}
 
-\item{nnType}{The network type = "linear", "rnn", "dnn","skit"}
+\item{rnnSize}{The size of the rnn cell, e.g. size of your word embeddings}
+
+\item{nnType}{The network type = "linear", "dnn", "rnn", "covNet" 
+("rnn" and "covNet" are not implemented, but included for completeness of the interface & future implementation)}
 
 \item{netType}{The network type for the final round = "ReLU","tanh"}
 
-\item{cellType}{The cell type for rnn network = "rnn","gru","lstm"}
+\item{cellType}{The cell type for rnn network = "rnn","gru","lstm" (not implemented, but included for completeness of the interface & future implementation)}
 }
 \description{
 Create  Classifier model based on the parameters

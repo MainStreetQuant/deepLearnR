@@ -72,14 +72,16 @@ TensorFlow.init <- function() {
 #' @param XTrain The X Matrix for training
 #' @param YTrain The Y Matrix for training
 #' @param nClasses The number of classes
-#' @param miniBatchSize Batch Sie for the mini batch for optimization algorithms like SGD
+#' @param miniBatchSize Batch Size for the mini batch for optimization algorithms like SGD
 #' @param steps Number of epochs for training
-#' @param optimizer The Optimizer algorithm = "SGD", "Adam","Adagrad"
+#' @param optimizer The Optimizer algorithm = "SGD", "Adam","Adagrad" (only "SGD" tested, others ignored)
 #' @param learningRate The learning rate for optimize algorithm
-#' @param hiddenUnits The number and architecture of hidden unit layers e.g. [10,20,10]
-#' @param nnType The network type = "linear", "rnn", "dnn","skit"
+#' @param hiddenUnits The number and architecture of hidden unit layers for dnn e.g. [10,20,10]
+#' @param rnnSize The size of the rnn cell, e.g. size of your word embeddings
+#' @param nnType The network type = "linear", "dnn", "rnn", "covNet" 
+#'     ("rnn" and "covNet" are not implemented, but included for completeness of the interface & future implementation)
 #' @param netType The network type for the final round = "ReLU","tanh"
-#' @param cellType The cell type for rnn network = "rnn","gru","lstm"
+#' @param cellType The cell type for rnn network = "rnn","gru","lstm" (not implemented, but included for completeness of the interface & future implementation)
 #' @export
 #' @examples
 #' {
@@ -103,8 +105,8 @@ TensorFlow.init <- function() {
 #'
 #'@seealso \code{\link{TensorFlow.predict}}
 TensorFlow.Classifier <- function(modelTag, XTrain, YTrain, nClasses=2, miniBatchSize=128,
-                                            steps=500, optimizer="SGD",
-                                            learningRate=0.05, hiddenUnits=c(10,20,10),
+                                            steps=500, optimizer="SGD", learningRate=0.05,
+                                            hiddenUnits=c(10,20,10), rnnSize=100,
                                             nnType="linear", netType="ReLU", cellType="lstm") {
   # validate parameters
   if (missing(modelTag)) {
@@ -116,10 +118,10 @@ TensorFlow.Classifier <- function(modelTag, XTrain, YTrain, nClasses=2, miniBatc
   if (missing(YTrain)) {
     stop("deepLearnR.TensorFlowClassifier : Parameter YTrain missing")
   }
-  optimizer <- match.arg(arg = optimizer, choices = c("SGD", "Adam", "Adagrad"))
-  nnType <- match.arg(arg = nnType, choices = c("linear", "rnn", "dnn","skit"))
+  optimizer <- match.arg(arg = optimizer, choices = c("SGD", "Adam", "Adagrad")) # ignored w/ SGD as default
+  nnType <- match.arg(arg = nnType, choices = c("linear", "dnn", "rnn","skit")) # "linear" & "dnn" implemented
   netType <- match.arg(arg = netType, choices = c("ReLU","tanh"))
-  cellType <- match.arg(arg = cellType, choices = c("rnn","gru","lstm"))
+  cellType <- match.arg(arg = cellType, choices = c("rnn","gru","lstm")) # not implemented
   # initialize and imports
   TensorFlow.init()
   # set of assigns
@@ -128,17 +130,15 @@ TensorFlow.Classifier <- function(modelTag, XTrain, YTrain, nClasses=2, miniBatc
   python.assign("miniBatchSize",miniBatchSize)
   python.assign("steps",steps)
   python.assign("learningRate",learningRate)
-  python.assign("hiddenUnits",hiddenUnits)
   python.assign("XTrain",XTrain)
-  # python.exec("print type(XTrain)")
   python.assign("YTrain",YTrain)
   #
   python.exec("X_train = pandas.DataFrame(XTrain)")
   python.exec("y_train = pandas.DataFrame(YTrain)")
   # do work
   python.exec("
-              print 'parameters : n_classes = %d batch_size = %d steps = %d learning_rate = %f hidden_units = %s' % (nClasses, \
-                miniBatchSize, steps, learningRate, hiddenUnits) 
+              print 'parameters : n_classes = %d batch_size = %d steps = %d learning_rate = %f' % (nClasses, \
+                miniBatchSize, steps, learningRate) 
               ")
   if (nnType == "linear") {
     python.exec("
@@ -149,34 +149,46 @@ TensorFlow.Classifier <- function(modelTag, XTrain, YTrain, nClasses=2, miniBatc
               tflr.fit(X_train, y_train)
               ")
   } else if (nnType == "dnn") {
+    python.assign("hiddenUnits", hiddenUnits)
+    python.exec("
+              print 'dnn parameter : hidden_units = %s' % (hiddenUnits)
+              ")
+    print (sprintf("dnn parameter : netType=%s",netType))
     if (netType == "ReLU") {
       python.exec("
-              tfdnn = skflow.TensorFlowDNNClassifier(hidden_units=hiddenUnits,
+              tfdnn_r = skflow.TensorFlowDNNClassifier(hidden_units=hiddenUnits,
                 n_classes=nClasses,batch_size=miniBatchSize,
                 steps=steps, learning_rate=learningRate)
-              models[modelTag] = tfdnn
-              tfdnn.fit(X_train, y_train)
+              models[modelTag] = tfdnn_r
+              tfdnn_r.fit(X_train, y_train)
               ")
-    } else { # tanh
-      python.exec("
+      } else { # tanh
+        python.exec("
               def dnn_tanh(X, y):
                 layers = skflow.ops.dnn(X, hiddenUnits, tf.tanh)
                 return skflow.models.logistic_regression(layers, y)
-              tfdnn = skflow.TensorFlowEstimator(model_fn=dnn_tanh,
+              tfdnn_t = skflow.TensorFlowEstimator(model_fn=dnn_tanh,
                   n_classes=nClasses,batch_size=miniBatchSize,
                   steps=steps, learning_rate=learningRate)
-              models[modelTag] = tfdnn
-              tfdnn.fit(X_train, y_train)
+              models[modelTag] = tfdnn_t
+              tfdnn_t.fit(X_train, y_train)
               ")
-    }
-  } else if (nnType == "rnn") {
-    python.exec("
-              tfrnn = skflow.TensorFlowRNNClassifier(hidden_units=hiddenUnits,
-                n_classes=nClasses,batch_size=miniBatchSize,
-                steps=steps, learning_rate=learningRate)
-              models[modelTag] = tfrnn
-              tfrnn.fit(X_train, y_train)
-              ")
+      }
+## We didn't get time to implenent & test all combinations fully.
+## But we kept the code as a reference for future implemenation 
+#   } else if (nnType == "rnn") { # with num_layers=1
+#     python.assign("rnnSize",rnnSize)
+#     python.assign("cellType",cellType)
+#     python.exec("
+#               print 'rnn parameter : rnnSize = %d cellType = %s' % (rnnSize, cellType)
+#               ")
+#     python.exec("
+#               tfrnn = skflow.TensorFlowRNNClassifier(rnn_size=rnnSize,
+#                 cell_type=cellType, n_classes=nClasses, batch_size=miniBatchSize,
+#                 steps=steps, learning_rate=learningRate, bidirectional=False)
+#               models[modelTag] = tfrnn
+#               tfrnn.fit(X_train, y_train)
+#               ")
   } else {
     stop(sprintf("deepLearnR.TensorFlowClassifier : nnType %s not implemented",nnType))
   }
@@ -201,7 +213,7 @@ TensorFlow.Classifier <- function(modelTag, XTrain, YTrain, nClasses=2, miniBatc
 #' @param calculateAccuracy Yes/No to calculate the accuracy from skflow. As a check
 #' @export
 #' @seealso \code{\link{TensorFlow.Classifier}}
-TensorFlow.predict <- function(modelTag, XTest, YTest=NA, calculateAccuracy=TRUE) {
+TensorFlow.predict <- function(modelTag, XTest, YTest=NULL, calculateAccuracy=TRUE) {
   # validate parameters
   if (missing(modelTag)) {
     stop("deepLearnR.TensorFlow.predict : Parameter modelTag missing")
@@ -209,12 +221,11 @@ TensorFlow.predict <- function(modelTag, XTest, YTest=NA, calculateAccuracy=TRUE
   if (missing(XTest)) {
     stop("deepLearnR.TensorFlow.predict : Parameter XTest missing")
   }
-  if (calculateAccuracy & is.na(YTest)) {
+  if (calculateAccuracy && is.null(YTest)){
     stop("deepLearnR.TensorFlow.predict : Parameter YTest missing to calculate accuracy")
   }
   python.assign("modelTag",modelTag)
   python.assign("XTest",XTest)
-  # python.exec("print type(XTest)")
   python.assign("YTest",YTest)
   python.exec("X_test = pandas.DataFrame(XTest)")
   python.exec("y_test = pandas.DataFrame(YTest)")

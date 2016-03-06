@@ -4,7 +4,7 @@
 \alias{TensorFlow.predict}
 \title{Predict using a model(modelTag) the Yvalues for the X Matrix}
 \usage{
-TensorFlow.predict(modelTag, XTest, YTest)
+TensorFlow.predict(modelTag, XTest, YTest = NULL, calculateAccuracy = TRUE)
 }
 \arguments{
 \item{modelTag}{Tag for this model - referenced in the model ceate calls like TensorFlow.Classifier}
@@ -12,6 +12,8 @@ TensorFlow.predict(modelTag, XTest, YTest)
 \item{XTest}{The X Matrix for test or prediction}
 
 \item{YTest}{The Y Matrix for test, to calculate the accuracy}
+
+\item{calculateAccuracy}{Yes/No to calculate the accuracy from skflow. As a check}
 }
 \description{
 Predict using a model(modelTag) the Yvalues for the X Matrix

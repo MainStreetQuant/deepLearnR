@@ -9,9 +9,9 @@
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="author" content="Krishna Sankar" />
+<meta name="author" content="Krishna Sankar,Billy Vreeland &amp; Tej Azad" />
 
-<meta name="date" content="2016-03-04" />
+<meta name="date" content="2016-03-05" />
 
 <title>summary</title>
 
@@ -31,8 +31,8 @@
 
 
 <h1 class="title">summary</h1>
-<h4 class="author"><em>Krishna Sankar</em></h4>
-<h4 class="date"><em>2016-03-04</em></h4>
+<h4 class="author"><em>Krishna Sankar,Billy Vreeland &amp; Tej Azad</em></h4>
+<h4 class="date"><em>2016-03-05</em></h4>
 
 </div>
 
@@ -53,7 +53,7 @@
 <h2>Stacks</h2>
 <pre><code>There are multiple deep learning stacks that we can leverage - Theano, Torch and TensorFlow. We chose TensorFlow but the package can be enhanced with interfaces to Theano and probably Torch. 
 
-Even with TensorFlow there are multiple paths. Currently, as of v 0.7.0, TensorFlow is divided between python and C++. The graphs are created in python and executed in the C++ layer. So we use rPython and interface with the python layer. As we were researching, other alternatives like Kera and Scikit Flow (Skflow) emerged that have interesting abstractions over tensorflow. Of these, Skflow is much more streamlined for Data Scientists’ work and it’s goal matches with our goal ie provide ML abstractions for data scientists.</code></pre>
+Even with TensorFlow there are multiple paths. Currently, as of v 0.7.0, TensorFlow is divided between python and C++. The graphs are created in python and executed in the C++ layer. So we use rPython and interface with the python layer. As we were researching, other alternatives like Keras and Scikit Flow (Skflow) emerged that have interesting abstractions over tensorflow. Of these, Skflow is much more streamlined for Data Scientists’ work and it’s goal matches with our goal ie provide ML abstractions for data scientists.</code></pre>
 <p>While users can write rPython to evoke TensorFlow or Scikit Flow, they will have to stitch together multiple classes, method and abstractions to perform normal ML activities. The goal of deepLearnR is provide a set of unified R interfaces (“structured machinery” as it is called) irrespective of the underlying frameworks. In fact a unifying interface and the capability to select the appropriate framework would be a goal when the package is fully developed.</p>
 </div>
 <div id="interfaces" class="section level2">
@@ -71,6 +71,9 @@ Even with TensorFlow there are multiple paths. Currently, as of v 0.7.0, TensorF
 </ul></li>
 <li>We were able to corall the interfaces to 3 Network Types (“linear”, “rnn”, “dnn”) X 2 Activations(“ReLU”,“tanh”) X 3 rnn types (“rnn”,“gru”,“lstm”) X 3 Optimizers (“SGD”, “Adam”, “Adagrad”). While this simplifies the interface, all permutations are not valid. There is an opportunity to streamline the interface - may be split into linearNN, DNN &amp; RNN.</li>
 <li>Once the interface is streamlined, it offers an elegant flexible way to create different nn architectures over a distributed tensorflow framework. For example a 3 layer deep neural network can be created by nnType=“dnn” and hiddenUnits=c(10,20,10). Later it can be changed to a 4 layer hiden layer by changing hiddenUnits=c(10,20,20,10)</li>
+<li>We wanted the interface to be as complete as possible, and that is why we have included rnn. The code</li>
+<li>We haven’t implemented ConvNets. Ran out of time. CovNets have more complex architectures and probably would need more richer parameters to be flexible in defining the architectures. As the covnets could be possibly have a different interface, we didn’t add it to the list</li>
+<li>We didn’t get time to test the Optimizers Adam &amp; Adagrad. We used SGD. This is a straightforward addition, but needs to be tested and verified against 2 or 3 datsets.</li>
 </ol>
 </div>
 
