@@ -2,9 +2,12 @@
 #' Leverage the distributed multicore capabilites of TensorFlow
 #'
 #' Functions to create deepLearning architectures and associated datasets. See examples
-#' for functions \code{\link{TensorFlow.Classifier}} and \code{\link{TensorFlow.predict}}.
+#' for functions \code{\link{TensorFlow.Classifier}}, \code{\link{TensorFlow.predict}},
+#'     \code{\link{TensorFlowDNNRegressor}} and \code{\link{TensorFlow.regressorEval}}.
 #' @seealso \code{\link{TensorFlow.Classifier}}
 #' @seealso \code{\link{TensorFlow.predict}}
+#' @seealso \code{\link{TensorFlowDNNRegressor}}
+#' @seealso \code{\link{TensorFlow.regressorEval}}
 #' @docType package
 #' @references [1] rPython and data in and out of pandas \url{https://statcompute.wordpress.com/2013/10/13/rpython-r-interface-to-python/}
 #' @references [2] some python code refactored from skflow examples in Tutorials (1,2 & 3) by Illia Polosukhin

@@ -78,8 +78,8 @@ TensorFlow.init <- function() {
 #' @param learningRate The learning rate for optimize algorithm
 #' @param hiddenUnits The number and architecture of hidden unit layers for dnn e.g. [10,20,10]
 #' @param rnnSize The size of the rnn cell, e.g. size of your word embeddings
-#' @param nnType The network type = "linear", "dnn", "rnn", "covNet" 
-#'     ("rnn" and "covNet" are not implemented, but included for completeness of the interface & future implementation)
+#' @param nnType The network type = "linear", "dnn", "rnn"
+#'     ("rnn" is not implemented, but included for completeness of the interface & future implementation)
 #' @param netType The network type for the final round = "ReLU","tanh"
 #' @param cellType The cell type for rnn network = "rnn","gru","lstm" (not implemented, but included for completeness of the interface & future implementation)
 #' @export
@@ -174,7 +174,7 @@ TensorFlow.Classifier <- function(modelTag, XTrain, YTrain, nClasses=2, miniBatc
               tfdnn_t.fit(X_train, y_train)
               ")
       }
-## We didn't get time to implenent & test all combinations fully.
+## We didn't get time to implement & test all combinations fully.
 ## But we kept the code as a reference for future implemenation 
 #   } else if (nnType == "rnn") { # with num_layers=1
 #     python.assign("rnnSize",rnnSize)

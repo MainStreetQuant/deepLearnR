@@ -30,8 +30,8 @@ TensorFlow.Classifier(modelTag, XTrain, YTrain, nClasses = 2,
 
 \item{rnnSize}{The size of the rnn cell, e.g. size of your word embeddings}
 
-\item{nnType}{The network type = "linear", "dnn", "rnn", "covNet" 
-("rnn" and "covNet" are not implemented, but included for completeness of the interface & future implementation)}
+\item{nnType}{The network type = "linear", "dnn", "rnn"
+("rnn" is not implemented, but included for completeness of the interface & future implementation)}
 
 \item{netType}{The network type for the final round = "ReLU","tanh"}
 

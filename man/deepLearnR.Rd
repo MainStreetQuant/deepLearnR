@@ -8,7 +8,8 @@
 Leverage the distributed multicore capabilites of TensorFlow}
 \description{
 Functions to create deepLearning architectures and associated datasets. See examples
-for functions \code{\link{TensorFlow.Classifier}} and \code{\link{TensorFlow.predict}}.
+for functions \code{\link{TensorFlow.Classifier}}, \code{\link{TensorFlow.predict}},
+    \code{\link{TensorFlowDNNRegressor}} and \code{\link{TensorFlow.regressorEval}}.
 }
 \references{
 [1] rPython and data in and out of pandas \url{https://statcompute.wordpress.com/2013/10/13/rpython-r-interface-to-python/}
@@ -27,5 +28,9 @@ for functions \code{\link{TensorFlow.Classifier}} and \code{\link{TensorFlow.pre
 \code{\link{TensorFlow.Classifier}}
 
 \code{\link{TensorFlow.predict}}
+
+\code{\link{TensorFlowDNNRegressor}}
+
+\code{\link{TensorFlow.regressorEval}}
 }
 
