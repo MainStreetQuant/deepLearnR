@@ -7,9 +7,13 @@
 \title{Deep Learnning interface to TensorFlow from R
 Leverage the distributed multicore capabilites of TensorFlow}
 \description{
-Functions to create deepLearning architectures and associated datasets. See examples
-for functions \code{\link{TensorFlow.Classifier}}, \code{\link{TensorFlow.predict}},
-    \code{\link{TensorFlowDNNRegressor}} and \code{\link{TensorFlow.regressorEval}}.
+Functions to create deepLearning architectures and associated datasets. 
+ Requires tensorFlow 0.7.0 and rPython installed.
+ Works with default python, not anaconda python installations.
+ See examples for functions
+    \code{\link{TensorFlow.Classifier}}, \code{\link{TensorFlow.predict}},
+    \code{\link{TensorFlowDNNRegressor}}, \code{\link{TensorFlow.regressorEval}} and
+    \code{\link{TensorFlow.SystemLinReg}}.
 }
 \references{
 [1] rPython and data in and out of pandas \url{https://statcompute.wordpress.com/2013/10/13/rpython-r-interface-to-python/}
@@ -32,5 +36,7 @@ for functions \code{\link{TensorFlow.Classifier}}, \code{\link{TensorFlow.predic
 \code{\link{TensorFlowDNNRegressor}}
 
 \code{\link{TensorFlow.regressorEval}}
+
+\code{\link{TensorFlow.SystemLinReg}}
 }
 

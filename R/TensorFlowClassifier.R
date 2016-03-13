@@ -85,7 +85,7 @@ TensorFlow.init <- function() {
 #' @export
 #' @examples
 #' {
-#'  Y <- titanic.data$Survived
+#'  Y <- deepLearnR::titanic.data$Survived
 #'  X <- deepLearnR::titanic.data[,c("Age","SibSp","Fare","Pclass")]
 #'  X$Age[is.na(X$Age)] <- mean(X$Age,na.rm=TRUE)
 #'  set.seed(512)

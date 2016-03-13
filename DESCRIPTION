@@ -16,7 +16,8 @@ SystemRequirements: Python pckages TensorFlow, skflow and Pandas
 License: GPL-3
 LazyData: true
 Imports:
-    rPython
+    rPython,
+    RJSONIO
 RoxygenNote: 5.0.1
 Repository: CRAN
 Suggests: knitr,
