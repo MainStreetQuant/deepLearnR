@@ -7,7 +7,7 @@ summary.pdf has notes and future work
 
 Dependencies
 
-* Tensorflow
+* Trnsorflow
 * skflow
 * rPython
 
